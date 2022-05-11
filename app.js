@@ -42,7 +42,44 @@ class Player{
     }}
 
 }
-class alien{
+class boom{
+    constructor(){
+        this.position = {
+            x: Math.floor(Math.random()*1200)+1,
+            y: Math.floor(Math.random()*800)+1
+        }
+        this.velocity = {
+            x:0,
+            y:0
+        }
+   const image = new Image()
+       
+        this.image = image
+        this.width = 60
+        this.height = 60}
+
+
+    draw(){ 
+            c.strokeStyle = 'white'
+            c.beginPath();
+            c.arc(this.position.x, this.position.y, 150 , 0, 2 * Math.PI);
+            c.stroke();
+      c.drawImage(
+        this.image,
+        this.position.x,
+        this.position.y,
+        this.height,
+        this.width)
+
+    }
+update(){
+        if(this.image){
+        this.draw()
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y}
+    }}
+
+/*class alien{
     constructor({position}){ 
         this.velocity = {
             x:0,
@@ -96,8 +133,8 @@ class Grid {
     const  columns = Math.floor(Math.random() * 2+4)
     const rows = Math.floor(Math.random() * 6+2)
     this.width=columns * 75;
-    for (let x = 0; x<columns; x++) {
-        for (let y = 0; rows; y++){
+    for (let x = 1; x<columns; x++) {
+        for (let y = 1; rows; y++){
         this.aliens.push(
             new alien({ 
             position: {
@@ -119,9 +156,9 @@ update(){
     this.velocity.y = 50
 }
  
-}}
-
-
+}}*/
+var timerBoom = new boom()
+const Boom = new boom()
 const player = new Player()
 //const grids = new Grid()
 
@@ -139,8 +176,7 @@ const keys = {
         pressed: false
     }
 }
-
-let frames=0
+Boom.update()
 player.update()
 //alien.update()
 function animate(){
@@ -148,6 +184,9 @@ function animate(){
     c.fillStyle = 'black'
     c.fillRect(0,0, canvas.width, canvas.height)
     //Alien.update()
+    setInterval(Boom.update(), 
+        console.log("test"),
+     3000);
     player.update()
     if(keys.a.pressed && player.position>=0){
         player.velocity.x = -5
@@ -164,6 +203,7 @@ function animate(){
     else{
         player.velocity.y = 0
     }
+}
 /*grids.forEach((grid) =>{
     grid.update()
     grid.aliens.forEach(alien=> {
@@ -173,8 +213,8 @@ function animate(){
     if (frames % 500 === 0){
         grids.push(new Grid)
     }
-    frames++*/
-}
+    frames++
+}*/
 
 animate()
 
