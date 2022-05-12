@@ -14,18 +14,24 @@ class Player{
             x:0,
             y:0
         }
-        
+     
         const image = new Image()
         image.src = './assets/player.png'
        
         this.image = image
         this.width = 75
         this.height = 75
-        
+        this.opacity= 1
 
         } 
     draw() {
+        c.strokeStyle = 'black'
+            c.beginPath();
+            c.arc(player.position.x+36 , player.position.y +39.5 ,50, 50 , 0, 2 * Math.PI);
+            c.stroke();
+            
      c.drawImage(
+        
         this.image, 
         this.position.x, 
         this.position.y, 
@@ -44,26 +50,33 @@ class Player{
 }
 class boom{
     constructor(){
-        this.position = {
-            x: Math.floor(Math.random()*1200)+1,
-            y: Math.floor(Math.random()*800)+1
-        }
+
         this.velocity = {
-            x:0,
-            y:0
+            x:-2,
+            y:-2
         }
    const image = new Image()
        
         this.image = image
         this.width = 60
-        this.height = 60}
+        this.height = 60
+        this.position = {
+            x: Math.floor(Math.random()*1200)+1,
+            y: Math.floor(Math.random()*800)+1
+        }}
 
 
     draw(){ 
-            c.strokeStyle = 'white'
+            c.strokeStyle = 'red'
             c.beginPath();
             c.arc(this.position.x, this.position.y, 150 , 0, 2 * Math.PI);
             c.stroke();
+        if (this.position.x >= canvas.width || this.position.x <= 0){
+        this.position.x = Math.floor(Math.random()*1500)+1, 
+        this.position.y = Math.floor(Math.random()*1200)+1}
+        else if (this.position.y >= canvas.height || this.position.y <= 0){
+            this.position.x = Math.floor(Math.random()*1500)+1,
+            this.position.y = Math.floor(Math.random()*1200)+1}
       c.drawImage(
         this.image,
         this.position.x,
@@ -74,12 +87,63 @@ class boom{
     }
 update(){
         if(this.image){
-        this.draw()
+        this.draw(this.position)
         this.position.x += this.velocity.x
-        this.position.y += this.velocity.y}
-    }}
+        this.position.y += this.velocity.y
+        
 
-/*class alien{
+        
+}}
+}
+class boom2{
+    constructor(){
+
+        this.velocity = {
+            x:-2,
+            y:-2
+        }
+   const image = new Image()
+       
+        this.image = image
+        this.width = 60
+        this.height = 60
+        this.position = {
+            x: Math.floor(Math.random()*1200)+1,
+            y: Math.floor(Math.random()*800)+1
+        }}
+
+
+    draw(){ 
+            c.strokeStyle = 'white'
+            c.beginPath();
+            c.arc(this.position.x, this.position.y, 150 , 0, 2 * Math.PI);
+            c.stroke();
+        if (this.position.x >= canvas.width || this.position.x <= 0){
+        this.position.x = Math.floor(Math.random()*1500)+1, 
+        this.position.y = Math.floor(Math.random()*1200)+1}
+        else if (this.position.y >= canvas.height || this.position.y <= 0){
+            this.position.x = Math.floor(Math.random()*1500)+1,
+            this.position.y = Math.floor(Math.random()*1200)+1}
+      c.drawImage(
+        this.image,
+        this.position.x,
+        this.position.y,
+        this.height,
+        this.width)
+
+    }
+update(){
+        if(this.image){
+        this.draw(this.position)
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+        
+
+        
+}}
+}
+/* Pay no attention to the man behind the curtain
+class alien{
     constructor({position}){ 
         this.velocity = {
             x:0,
@@ -157,10 +221,10 @@ update(){
 }
  
 }}*/
-var timerBoom = new boom()
+
 const Boom = new boom()
+const Boom2 = new boom2
 const player = new Player()
-//const grids = new Grid()
 
 const keys = {
     a: {
@@ -176,18 +240,17 @@ const keys = {
         pressed: false
     }
 }
-Boom.update()
+
 player.update()
-//alien.update()
+
 function animate(){
+
     requestAnimationFrame(animate)
     c.fillStyle = 'black'
     c.fillRect(0,0, canvas.width, canvas.height)
-    //Alien.update()
-    setInterval(Boom.update(), 
-        console.log("test"),
-     3000);
     player.update()
+    Boom.update()
+    Boom2.update()
     if(keys.a.pressed && player.position>=0){
         player.velocity.x = -5
     } else if(keys.d.pressed && player.position>=0){
@@ -203,22 +266,17 @@ function animate(){
     else{
         player.velocity.y = 0
     }
-}
-/*grids.forEach((grid) =>{
-    grid.update()
-    grid.aliens.forEach(alien=> {
-        alien.update({velocity: grid.velocity})
-        })
-    } )
-    if (frames % 500 === 0){
-        grids.push(new Grid)
+    if(Boom.position.y + Boom.height>= player.position.y&&
+        Boom.position.x + Boom.width<= player.position.x){
+        console.log('Lose')
+       
     }
-    frames++
-}*/
-
+}
 animate()
 
 addEventListener('keydown',({key}) => {
+   
+ 
     switch (key){
         case 'a':
             //console.log('LEFT')
